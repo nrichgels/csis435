@@ -4,23 +4,40 @@ import pprint # so we can pretty-print our output
 
 class NestedDict(object):
     def __init__(self):
+        # This dictionary is a scope of values representing elements 
+        #    within the language.
+        # Each element is pointed to a type or another scope
+        #   (which would also be a dictionary).
         self.values = {}
+        # List of scopes found by the parser.  These are all dictioanries
+        #    that branch off the main dicitionary (overall scope).
         self.path = []
+
     def __getitem__(self,name):
         """
             we override [] so that we can access whatever symbols are at the current scope
         """
+        # current_node is set to the overall scope of the program.
         current_node = self.values
+        # For Every value in the list, the  node is set to the next scope
+        #    in the given dictionary, as denoted by our list of scopes.
+
         for elem in self.path:
             current_node = current_node[elem]
+
+        # Returns the item at the requested name.
         return current_node[name]
+
     def current_node(self):
         """
         """
+
+
         current_node = self.values
         for elem in self.path:
             current_node = current_node[elem]
         return current_node
+
     def __setitem__(self,name,value):
         """
             we override [] so that we can access/set whatever symbols are at the current scope
